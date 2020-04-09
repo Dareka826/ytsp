@@ -122,7 +122,6 @@ while True:
 
         for v in videos:
             if v["n"] == n:
-                #subprocess.call((playerv + " https://www.youtube.com/watch?v=" + v["id"]).split(" "))
                 subprocess.call(playerv + " https://www.youtube.com/watch?v=" + v["id"] + " >/dev/null 2>&1 &", shell=True)
                 break
 
@@ -135,7 +134,6 @@ while True:
 
         for v in videos:
             if v["n"] == n:
-                #subprocess.call((playera + " https://www.youtube.com/watch?v=" + v["id"]).split(" "))
                 subprocess.call(playera + " https://www.youtube.com/watch?v=" + v["id"] + " >/dev/null 2>&1 &", shell=True)
                 break
 
