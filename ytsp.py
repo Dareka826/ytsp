@@ -2,7 +2,7 @@
 import subprocess, requests
 
 api_url = "https://www.googleapis.com/youtube/v3/"
-api_key = "#######################################"
+api_key = "AIzaSyAivZu0sEhrheCHLDy33ws6BWjKDBmjxPA"
 max_results = 10
 region_code = "US"
 
@@ -15,6 +15,7 @@ colors = {
     "title": "\u001b[0m",
     "channel": "\u001b[33m",
     "time": "\u001b[32m",
+    "duration": "\u001b[35m",
     "reset": "\u001b[0m"
 }
 
@@ -31,6 +32,17 @@ help_txt = """ytsp commands:
     v[n] - play entry [n] (video)
     a[n] - play entry [n] (audio)
     i[n] - show info about entry [n]"""
+
+def get_duration(vid):
+    response = requests.get(
+        api_url + "videos",
+        params = (
+            ("part", "contentDetails"),
+            ("key", api_key),
+            ("id", vid),
+            ("fields", "items/contentDetails/duration")
+        ))
+    return response.json()["items"][0]["contentDetails"]["duration"].replace("PT", "").replace("H", ":").replace("M", ":").replace("S", "")
 
 def search(query, pageToken=""):
     response = requests.get(
@@ -62,7 +74,8 @@ def search(query, pageToken=""):
             "title": item["snippet"]["title"],
             "channel": item["snippet"]["channelTitle"],
             "time": item["snippet"]["publishedAt"],
-            "description": item["snippet"]["description"]
+            "description": item["snippet"]["description"],
+            "duration": get_duration(item["id"]["videoId"])
         })
         num += 1
 
@@ -72,6 +85,7 @@ def print_videos():
             colors["num"] + v["n"] + ": " +
             colors["id"] + v["id"] + " " +
             colors["title"] + v["title"] + " " +
+            colors["duration"] + "(" + v["duration"] + ") " +
             colors["channel"] + v["channel"] + " " +
             colors["reset"]
         )
