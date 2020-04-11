@@ -31,7 +31,8 @@ help_txt = """ytsp commands:
     n - next page
     v[n] - play entry [n] (video)
     a[n] - play entry [n] (audio)
-    i[n] - show info about entry [n]"""
+    i[n] - show info about entry [n]
+    x - exit"""
 
 def get_duration(vid):
     response = requests.get(
@@ -165,6 +166,9 @@ while True:
     # Clear screen
     elif cmd[0] == "c":
         subprocess.run("clear")
+
+    elif cmd[0] == "x":
+        exit(0)
 
     else:
         print("?")
